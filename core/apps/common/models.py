@@ -1,4 +1,13 @@
+import string
+import random
+
 from django.db import models
+
+
+# Function to generate a random slug
+def rand_slug():
+    return (random.choice(string.ascii_lowercase + string.digits) for _ in range(3))
+
 
 # BaseModel for models
 class TimedBaseModel(models.Model):
