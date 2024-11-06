@@ -1,10 +1,10 @@
 DC = docker compose
-STORAGES_FILE = docker_compose\storages.yaml
+STORAGES_FILE = docker_compose/storages.yaml
 EXEC = docker exec -it
 DB_CONTAINER = example-db
 LOGS = docker logs
 ENV_FILE = --env-file .env
-APP_FILE = docker_compose\app.yaml
+APP_FILE = docker_compose/app.yaml
 APP_CONTAINER = main-app
 MANAGE_PY = python manage.py
 
