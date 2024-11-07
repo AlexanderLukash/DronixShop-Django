@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from core.apps.common.models import TimedBaseModel
+from core.apps.shop.entities.products import ProductEntity
 from core.apps.shop.models.categories import Category
 
 
@@ -58,6 +59,22 @@ class Product(TimedBaseModel):
 
     def __str__(self):
         return self.title
+
+    def to_entity(self) -> ProductEntity:
+        return ProductEntity(
+            id=self.id,
+            category=self.category,
+            title=self.title,
+            brand=self.brand,
+            description=self.description,
+            slug=self.slug,
+            price=self.price,
+            image=self.image.url if self.image else None,
+            available=self.available,
+            is_active=self.is_active,
+            created_at=self.created_at,
+            updated_at=self.updated_at,
+        )
 
     def get_absolute_url(self):
         return reverse("model_detail", kwargs={"pk": self.pk})
