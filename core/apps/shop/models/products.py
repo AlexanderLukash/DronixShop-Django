@@ -40,7 +40,7 @@ class Product(TimedBaseModel):
     )
     image = models.ImageField(
         verbose_name="Image",
-        upload_to="products",
+        upload_to="products/%Y/%m/%d/images/",
         blank=True,
         null=True,
     )
