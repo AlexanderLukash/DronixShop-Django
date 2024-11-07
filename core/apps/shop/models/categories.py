@@ -1,28 +1,32 @@
 from django.db import models
+
 # from django.urls import reverse
 from django.utils.text import slugify
 
-from core.apps.common.models import TimedBaseModel, rand_slug
+from core.apps.common.models import (
+    rand_slug,
+    TimedBaseModel,
+)
 from core.apps.shop.entities.categories import CategoryEntity
 
 
 # Models for categories
 class Category(TimedBaseModel):
     name = models.CharField(
-        verbose_name='Category',
+        verbose_name="Category",
         max_length=250,
         db_index=True,
     )
     parent = models.ForeignKey(
-        verbose_name='Parent',
-        to='self',
+        verbose_name="Parent",
+        to="self",
         on_delete=models.CASCADE,
-        related_name='children',
+        related_name="children",
         blank=True,
         null=True,
     )
     slug = models.SlugField(
-        verbose_name='URL',
+        verbose_name="URL",
         max_length=250,
         unique=True,
         null=False,
@@ -33,16 +37,16 @@ class Category(TimedBaseModel):
         return CategoryEntity(
             id=self.id,
             name=self.name,
-            parent_id=self.parent.id,
+            parent=self.parent,
             slug=self.slug,
             created_at=self.created_at,
             updated_at=self.updated_at,
         )
 
     class Meta:
-        unique_together = (['slug', 'parent'])
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        unique_together = ["slug", "parent"]
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         full_path = [self.name]
@@ -50,13 +54,12 @@ class Category(TimedBaseModel):
         while k is not None:
             full_path.append(k.name)
             k = k.parent
-        return ' > '.join(full_path[::-1])
+        return " > ".join(full_path[::-1])
 
     def save(self, *args, **kwargs):
-
         if not self.slug:
-            self.slug = slugify(f'{rand_slug()}-pickBetter{self.name}')
-        super(Category, self).save(*args, **kwargs)
+            self.slug = slugify(f"{rand_slug()}-pickBetter{self.name}")
+        super().save(*args, **kwargs)
 
     # def get_absolute_url(self):
     #     return reverse
